@@ -107,6 +107,7 @@ public class EstacionamentoUsuario {
     }
 
     public Boolean isExpirado() {
-        return this.getDataHoraFim() == null && this.calculaDataHoraFim().compareTo(LocalDateTime.now()) < 0;
+        return this.getDataHoraFim() != null ||
+                this.calculaDataHoraFim().compareTo(LocalDateTime.now()) < 0;
     }
 }

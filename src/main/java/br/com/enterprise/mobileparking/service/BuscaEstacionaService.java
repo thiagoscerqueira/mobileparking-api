@@ -50,7 +50,7 @@ public class BuscaEstacionaService {
             throws EstacionamentoVigenteNaoExistenteException {
         EstacionamentoUsuario ultimoEstacionamentoUsuario = buscaUltimoEstacionamento(new Usuario(usuarioId));
 
-        if (ultimoEstacionamentoUsuario == null) {
+        if (ultimoEstacionamentoUsuario == null || ultimoEstacionamentoUsuario.isExpirado()) {
             throw new EstacionamentoVigenteNaoExistenteException();
         }
 
