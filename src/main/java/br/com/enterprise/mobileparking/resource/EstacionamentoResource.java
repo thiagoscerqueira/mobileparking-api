@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/estacionamento")
 @Api(value = "Estacionamento", description = "Recursos para manipulação dos estacionamentos dos usuários")
+@CrossOrigin
 public class EstacionamentoResource extends BaseResource{
 
     private final EstacionaService estacionaService;
@@ -50,6 +51,14 @@ public class EstacionamentoResource extends BaseResource{
     public ResponseEntity consultaVigente(@RequestParam("usuarioId") String usuarioId)
             throws EstacionamentoVigenteNaoExistenteException {
         ConsultaEstacionaDto consultaEstacionaDto = buscaEstacionaService.consultaEstacionamentoVigenteUsuario(usuarioId);
+        return ResponseEntity.ok(consultaEstacionaDto);
+    }
+
+    @GetMapping("/placa/{placa}")
+    @ApiOperation(value = "Consulta estacionamento em vigência por placa do veículo")
+    public ResponseEntity consultaVigentePorPlaca(@PathVariable("placa") String placa)
+            throws EstacionamentoUsuarioNaoExistenteException {
+        ConsultaEstacionaDto consultaEstacionaDto = buscaEstacionaService.consultaEstacionamentoVigentePorPlaca(placa);
         return ResponseEntity.ok(consultaEstacionaDto);
     }
 

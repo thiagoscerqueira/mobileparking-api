@@ -68,6 +68,17 @@ public class BuscaEstacionaService {
         }
     }
 
+    public ConsultaEstacionaDto consultaEstacionamentoVigentePorPlaca(String placaVeiculo) throws EstacionamentoUsuarioNaoExistenteException {
+        Optional<EstacionamentoUsuario> estacionamentoPlaca =
+                estacionamentoUsuarioRepository
+                        .findFirstByPlacaVeiculoAndDataHoraFimIsNullOrderByDataHoraInicioDesc(placaVeiculo.toUpperCase());
+        if (!estacionamentoPlaca.isPresent() || estacionamentoPlaca.get().isExpirado()) {
+            throw new EstacionamentoUsuarioNaoExistenteException();
+        }
+
+        return buildRetornoEstacionaDto(estacionamentoPlaca.get());
+    }
+
     public EstacionamentoUsuario buscaUltimoEstacionamento(Usuario usuario) {
         Optional<EstacionamentoUsuario> ultimoEstacionamentoOpt =
                 estacionamentoUsuarioRepository.findFirstByUsuarioOrderByDataHoraInicioDesc(usuario);
@@ -81,6 +92,7 @@ public class BuscaEstacionaService {
         consultaEstacionaDto.setTempoRestante(estacionamentoUsuario.calculaTempoRestante());
         consultaEstacionaDto.setInicio(estacionamentoUsuario.getDataHoraInicio());
         consultaEstacionaDto.setExpirado(estacionamentoUsuario.isExpirado());
+        consultaEstacionaDto.setUsuarioId(estacionamentoUsuario.getUsuario().getId());
         return consultaEstacionaDto;
     }
 

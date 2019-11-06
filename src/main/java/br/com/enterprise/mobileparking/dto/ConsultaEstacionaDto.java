@@ -2,6 +2,8 @@ package br.com.enterprise.mobileparking.dto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class ConsultaEstacionaDto {
 
@@ -49,5 +51,13 @@ public class ConsultaEstacionaDto {
 
     public void setUsuarioId(String usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getInicioFormatado() {
+        return inicio.format(DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm:ss"));
+    }
+
+    public String getTempoRestanteFormatado() {
+        return LocalTime.MIDNIGHT.plus(this.tempoRestante).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 }
